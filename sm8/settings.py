@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'posting',
     'rest_framework',
     'south',
+    'pipeline',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -68,7 +69,6 @@ DATABASES = {
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
-
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'],
 }
 
@@ -88,7 +88,39 @@ USE_L10N = True
 USE_TZ = True
 
 
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'staticfiles/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+
+
+PIPELINE_CSS = {
+    'all': {
+        'source_filenames': (
+          'css/*.css',
+        ),
+        'output_filename': 'css/all.css',
+    },
+}
+
+PIPELINE_JS = {
+    'all': {
+        'source_filenames': (
+          'js/*.js',
+          'coffee/*.coffee',
+        ),
+        'output_filename': 'js/all.js',
+    }
+}
+
+PIPELINE_COMPILERS = (
+    'pipeline.compilers.coffee.CoffeeScriptCompiler',
+    'pipeline.compilers.sass.SASSCompiler',
+)
