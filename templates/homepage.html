@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="side_menu col-md-1">
+                <div class="row">
+                    <ul>
+                        <li><a href="#" class="home"><i class="fa fa-home"></i></a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#" class="messages"><i class="fa fa-envelope-o"></i></a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#" class="profile"><i class="fa fa-user"></i></a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#" class="favourites"><i class="fa fa-star-o"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content col-md-10">
+                <h2>Recent posts</h2>
+                <div id="posts"></div>
+            </div>
+            <div class="side_menu col-md-1">
+                <div class="row">
+                    <ul>
+                        <li><a href="#" class="logout"><i class="fa fa-power-off"></i></a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#" class="settings"><i class="fa fa-gear"></i></a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#" class="help"><i class="fa fa-question-circle"></i></a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#" class="wallet"><i class="fa fa-bitcoin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

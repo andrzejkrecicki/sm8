@@ -105,6 +105,8 @@ PIPELINE_CSS = {
     'all': {
         'source_filenames': (
           'css/*.css',
+          'scss/*.scss',
+          'scss/font-awesome/font-awesome.scss',
         ),
         'output_filename': 'css/all.css',
     },
@@ -113,8 +115,15 @@ PIPELINE_CSS = {
 PIPELINE_JS = {
     'all': {
         'source_filenames': (
+          'js/jquery*',
+          'js/underscore*',
           'js/*.js',
-          'coffee/*.coffee',
+          'eco/*.eco',
+          'coffee/init.coffee',
+          'coffee/models/*.coffee',
+          'coffee/collections/*.coffee',
+          'coffee/views/*.coffee',
+          'coffee/core.coffee',
         ),
         'output_filename': 'js/all.js',
     }
@@ -123,4 +132,5 @@ PIPELINE_JS = {
 PIPELINE_COMPILERS = (
     'pipeline.compilers.coffee.CoffeeScriptCompiler',
     'pipeline.compilers.sass.SASSCompiler',
+    'pipeline_eco.compiler.EcoCompiler',
 )

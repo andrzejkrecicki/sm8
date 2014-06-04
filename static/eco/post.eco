@@ -1,0 +1,10 @@
+<div class="post_wrapper">
+    <div class="post well">
+        <div class="info">
+            <div><i class="fa fa-user"></i><span><a href="./user/<%= @user %>"><%= @user %></a></span></div>
+            <div><i class="fa fa-calendar"></i><span><%= moment(@pub_date).format('MMMM Do YYYY, h:mm:ss a') %></span></div>
+            <div><i class="fa fa-comments-o"></i><span>45</span></div>
+        </div>
+        <div class="body"><p><%= @content %></p></div>
+    </div>
+</div>

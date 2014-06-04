@@ -1,0 +1,22 @@
+@mixin transition($transition-property, $transition-time, $method) {
+    -webkit-transition: $transition-property $transition-time $method;
+    -moz-transition: $transition-property $transition-time $method;
+    -ms-transition: $transition-property $transition-time $method;
+    -o-transition: $transition-property $transition-time $method;
+    transition: $transition-property $transition-time $method;
+}
+
+@mixin radial-gradient($position, $shape, $color-stop1, $color-stop2) {
+    background: -moz-radial-gradient($position, $shape, $color-stop1, $color-stop2);
+    background: -webkit-radial-gradient($position, $shape, $color-stop1, $color-stop2);
+    background: -o-radial-gradient($position, $shape, $color-stop1, $color-stop2);
+    background: -ms-radial-gradient($position, $shape, $color-stop1, $color-stop2);
+    background: radial-gradient($position, $shape, $color-stop1, $color-stop2);
+}
+
+@mixin background-size($size) {
+    -webkit-background-size: $size;
+    -moz-background-size: $size;
+    -o-background-size: $size;
+    background-size: $size;
+}

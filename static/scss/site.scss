@@ -1,0 +1,87 @@
+@import "mixins";
+
+
+html {
+    width: 100%;
+    height: 100%;
+    @include radial-gradient(center, circle cover, rgb(39, 43, 48) 0%, rgb(59, 63, 68) 100%);
+    @include background-size(cover);
+}
+
+body {
+    background-color: transparent;
+}
+
+#app_container {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.side_menu {
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        li {
+            display: block;
+            a {
+                text-align: center;
+                display: block;
+                overflow: hidden;
+                opacity: .5;
+                font-size: 25px;
+                padding: 34px;
+                color: #ddd;
+                @include transition(all, .3s, ease-in-out);
+            }
+            a:hover {
+                opacity: .9;
+            }
+            a.home {
+                background: #454575;
+            }
+            a.messages {
+                background: #044;
+            }
+            a.profile {
+                background: #888;
+            }
+            a.favourites {
+                background: #252;
+            }
+            a.logout {
+                background: #404;
+            }
+            a.settings {
+                background: #440;
+            }
+            a.help {
+                background: #225;
+            }
+            a.wallet {
+                background: #522;
+            }
+            i {
+                float: left;
+                width: 100%;
+            }
+        }
+    }
+}
+
+
+.post_wrapper {
+    .post {
+        .info {
+            div {
+                display: inline-block;
+                margin-right: 5px;
+                margin-bottom: 5px;
+                i.fa {
+                    margin-right: 5px;
+                    color: #666;
+                }
+            }
+        }
+    }
+}

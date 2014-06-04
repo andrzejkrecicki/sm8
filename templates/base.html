@@ -9,6 +9,9 @@
     {% compressed_css 'all' %}
 </head>
 <body>
+    <div id="app_container">
+        {% block content %}{% endblock %}
+    </div>
     {% compressed_js 'all' %}
 </body>
 </html>

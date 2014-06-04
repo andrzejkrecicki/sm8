@@ -4,12 +4,13 @@ from posting.models import Post, Hashtag
 
 
 class PostSerializer(serializers.ModelSerializer):
+    user = serializers.Field(source='user.username')
     class Meta:
         model = Post
-        fields = ('title', 'content', 'pub_date',)
+        fields = ('id', 'user', 'title', 'content', 'pub_date',)
 
 
 class HashtahSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hashtag
-        fields = ('title',)
+        fields = ('id', 'title',)
