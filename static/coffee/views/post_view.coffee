@@ -1,4 +1,4 @@
-class app.PostView extends Backbone.View
+class sm8.views.Post extends Backbone.View
     tagName: "div"
     className: "post"
     template: JST['static/eco/post']

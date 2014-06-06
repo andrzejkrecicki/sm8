@@ -33,6 +33,10 @@ body {
                 padding: 34px;
                 color: #ddd;
                 @include transition(all, .3s, ease-in-out);
+                > i {
+                    float: left;
+                    width: 100%;
+                }
             }
             a:hover {
                 opacity: .9;
@@ -49,7 +53,7 @@ body {
             a.favourites {
                 background: #252;
             }
-            a.logout {
+            a.login_logout {
                 background: #404;
             }
             a.settings {
@@ -61,8 +65,10 @@ body {
             a.wallet {
                 background: #522;
             }
-            i {
-                float: left;
+            .current_user {
+                position: absolute;
+                top: 5px;
+                text-align: center;
                 width: 100%;
             }
         }

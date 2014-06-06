@@ -1,4 +1,4 @@
-class app.Post extends Backbone.Model
+class sm8.models.Post extends Backbone.Model
     defaults:
         title: "Default title"
         content: "Lorem ipsum dolor sit amet"

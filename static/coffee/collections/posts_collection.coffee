@@ -1,3 +1,3 @@
-class app.PostCollection extends Backbone.Collection
-    model: app.Post
+class sm8.collections.Posts extends Backbone.Collection
+    model: sm8.models.Post
     url: '/api/post/'
