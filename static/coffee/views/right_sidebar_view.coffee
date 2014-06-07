@@ -7,6 +7,8 @@ class sm8.views.RightSidebar extends Backbone.View
 
     initialize: ->
         @render()
+        @listenTo sm8, "user_login", @render
+        @listenTo sm8, "user_logout", @render
 
     render: ->
         @$el.html @template()
@@ -24,5 +26,4 @@ class sm8.views.RightSidebar extends Backbone.View
             $.ajax
                 url: "api/logout/"
                 success: ->
-                    sm8.user = null
-                    sm8.right_sidebar.render()
+                    sm8.logout()

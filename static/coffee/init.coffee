@@ -1,28 +1,27 @@
-window.sm8 = 
+window.sm8 = $.extend {}, Backbone.Events,
     models: {}
     collections: {}
     views: {}
     routers: {}
     user: null
+    csrftoken: $("meta[name=csrf-token]").attr 'content'
 
     initialize: ->
-        sm8.router = new sm8.routers.DefaultRouter
         $("body").on "click", "a", (e) ->
             sm8.router.navigate $(@).attr("href"), trigger: true
             e.preventDefault()
 
+        sm8.router = new sm8.routers.DefaultRouter
         Backbone.history.start pushState: true
 
         (new sm8.models.User).fetch
             success: (model, response, options) ->
                 if model.id
-                    sm8.user = new sm8.models.User response
+                    sm8.login new sm8.models.User response
                 else
-                    sm8.user = null
-                sm8.right_sidebar.render()
+                    sm8.logout()
             error: (model, response, options) ->
-                sm8.user = null
-                sm8.right_sidebar.render()
+                sm8.logout()
 
         sm8.posts_view = new sm8.views.Posts
         sm8.right_sidebar = new sm8.views.RightSidebar
@@ -33,6 +32,27 @@ window.sm8 =
         sm8.dialog_view.$el.removeData().unbind()
         sm8.dialog_view.remove()
         Backbone.View::remove.call(sm8.dialog_view)
+
+    login: (user) ->
+        sm8.user = user
+        sm8.trigger "user_login"
+
+    logout: ->
+        sm8.user = null
+        sm8.trigger "user_logout"
+
+$.fn.extend
+    form_data: ->
+        data = {}
+        form_data = $(@).serializeArray()
+        data[item.name] = item.value for item in form_data
+        return data
+
+$.ajaxSetup
+    crossDomain: false
+    beforeSend: (xhr, settings) ->
+        if not /^(GET|HEAD|OPTIONS|TRACE)$/.test settings.type
+            xhr.setRequestHeader "X-CSRFToken", sm8.csrftoken
 
 $ ->
     sm8.initialize()

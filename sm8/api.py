@@ -9,10 +9,17 @@ from posting.models import Post, Hashtag
 from sm8.serializers import UserSerializer
 
 
-class PostViewSet(viewsets.ReadOnlyModelViewSet):
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.user == request.user
+
+
+class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
     def pre_save(self, obj):
         obj.user = self.request.user

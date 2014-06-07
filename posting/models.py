@@ -15,6 +15,9 @@ class Post(models.Model):
     hashtags = models.ManyToManyField('Hashtag')
     user = models.ForeignKey(User)
 
+    class Meta:
+        ordering = ['-pub_date']
+
     def save(self, *args, **kwargs):
         super(Post, self).save(*args, **kwargs)
         r = re.compile(r'#{1}(\w{1,120})')

@@ -16,21 +16,18 @@ class sm8.views.Login extends Backbone.View
         return if @$(":submit").prop("disabled")
         @$(":submit").prop("disabled", true)
         @$(".fa.fa-refresh").show()
-        data = {}
-        form_data = @$("form").serializeArray()
-        data[item.name] = item.value for item in form_data
-        @login data
+        @login @$("form").form_data()
 
     login: (data) ->
         user = new sm8.models.User
         user.save data,
             success: (model, response, options) ->
                 if model.id
-                    sm8.user = new sm8.models.User response
+                    sm8.login new sm8.models.User response
                     @$("#loginModal").modal('hide')
                     sm8.right_sidebar.render()
                 else
-                    sm8.user = null
+                    sm8.logout()
                 @$(".fa.fa-refresh").hide()
                 @$(":submit").prop("disabled", false)
             error: (model, response, options) ->
@@ -40,6 +37,6 @@ class sm8.views.Login extends Backbone.View
                     alert.html "<div class='alert alert-danger'><a class='close' data-dismiss='alert'>×</a><span>#{error}</span></div>"
                     alert.alert()
 
-                sm8.user = null
+                sm8.logout()
                 @$(".fa.fa-refresh").hide()
                 @$(":submit").prop("disabled", false)

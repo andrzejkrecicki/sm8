@@ -1,2 +1,12 @@
 <h2><%= @title %></h2>
+<div class="create" <%= if not sm8.user then "style='display:none;'" else "" %>>
+    <form class="form">
+        <div class="form-group">
+            <textarea class="form-control" name="content" placeholder="Share your thoughts..."></textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">Send</button>
+        </div>
+    </form>
+</div>
 <div id="posts"></div>
