@@ -122,6 +122,7 @@ PIPELINE_JS = {
           'coffee/init.coffee',
           'coffee/models/*.coffee',
           'coffee/collections/*.coffee',
+          'coffee/routers/*.coffee',
           'coffee/views/*.coffee',
           'coffee/core.coffee',
         ),

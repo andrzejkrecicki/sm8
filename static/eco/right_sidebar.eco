@@ -9,13 +9,7 @@
         </div>
         <a href="#" class="login_logout"><i class="fa fa-power-off"></i></a>
     </li>
-</ul>
-<ul>
     <li><a href="#" class="settings"><i class="fa fa-gear"></i></a></li>
-</ul>
-<ul>
     <li><a href="#" class="help"><i class="fa fa-question-circle"></i></a></li>
-</ul>
-<ul>
     <li><a href="#" class="wallet"><i class="fa fa-bitcoin"></i></a></li>
 </ul>

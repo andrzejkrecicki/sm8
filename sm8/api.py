@@ -22,6 +22,9 @@ class HashtagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Hashtag.objects.all()
     serializer_class = HashtahSerializer
 
+    def retrieve(self, request, pk):
+        return Response(PostSerializer(Post.objects.filter(hashtags__title=pk), many=True).data)
+
 
 class LoginViewSet(viewsets.ReadOnlyModelViewSet):
     model = User
