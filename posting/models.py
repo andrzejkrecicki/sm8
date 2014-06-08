@@ -11,7 +11,7 @@ class Post(models.Model):
     title = models.CharField(max_length=250)
     content = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
-    parent = models.ForeignKey('self', null=True)
+    parent = models.ForeignKey('self', null=True, related_name='comments')
     hashtags = models.ManyToManyField('Hashtag')
     user = models.ForeignKey(User)
     likes = models.ManyToManyField(User, related_name='liked')
@@ -22,7 +22,7 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         super(Post, self).save(*args, **kwargs)
         r = re.compile(r'#{1}(\w{1,120})')
-        tags = set(r.findall(self.content))
+        tags = set(tag.lower() for tag in r.findall(self.content))
         for tag in tags:
             try:
                 self.hashtags.add(Hashtag.objects.get(title=tag))

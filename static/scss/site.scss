@@ -74,29 +74,31 @@ body {
 }
 
 
-.post_wrapper {
-    .post {
-        .info, .footer {
-            div {
-                display: inline-block;
-                margin-right: 5px;
-                margin-bottom: 5px;
-                i.fa {
-                    color: #858585;
-                }
+.post {
+    h4.media-heading {
+        display: inline;
+        margin: 0 5px 0 0;
+    }
+    .info, .footer {
+        div {
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            i.fa {
+                color: #858585;
             }
         }
-        .footer .clickable:hover {
+    }
+    .footer .clickable:hover {
+        color: #fff;
+        cursor: pointer;
+        i.fa {
             color: #fff;
-            cursor: pointer;
-            i.fa {
-                color: #fff;
-            }
         }
     }
 }
 
-.create {
+.create, .reply_form {
     form .form-group {
         overflow: hidden;
         textarea {
@@ -110,6 +112,13 @@ body {
             height: 58px;
 
         }
+    }
+}
+
+.btn.btn-default {
+    background: rgb(58, 73, 88);
+    &:hover {
+        background: #2a3948;
     }
 }
 

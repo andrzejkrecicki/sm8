@@ -11,6 +11,9 @@ window.sm8 = $.extend {}, Backbone.Events,
             sm8.router.navigate $(@).attr("href"), trigger: true
             e.preventDefault()
 
+        $("body").on "submit", "form", (e) ->
+            e.preventDefault()
+
         sm8.router = new sm8.routers.DefaultRouter
         Backbone.history.start pushState: true
 

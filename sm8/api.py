@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
+
 from rest_framework import viewsets, permissions
 from rest_framework.routers import DefaultRouter
 from rest_framework.response import Response
@@ -19,7 +21,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.filter(parent=None)
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
@@ -41,7 +43,8 @@ class HashtagViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = HashtahSerializer
 
     def retrieve(self, request, pk):
-        return Response(PostSerializer(Post.objects.filter(hashtags__title=pk), many=True).data)
+        posts = Post.objects.filter((Q(parent=None) & Q(hashtags__title=pk)) | Q(comments__hashtags__title=pk))
+        return Response(PostSerializer(posts, many=True).data)
 
 
 class LoginViewSet(viewsets.ReadOnlyModelViewSet):

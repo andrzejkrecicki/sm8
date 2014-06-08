@@ -27,13 +27,13 @@ class sm8.views.Posts extends Backbone.View
         @$el.html @template title: "Recent posts"
 
         for post in @collection.models
-            @renderPost(post)
+            @renderPost post
 
     renderHashtags: ->
         @$el.html @template title: "Browsing hashtag ##{@tag}"
 
         for post in @collection.models
-            @renderPost(post)
+            @renderPost post
 
     switch_to_hashtags: (tag) =>
         @tag = tag
@@ -57,10 +57,8 @@ class sm8.views.Posts extends Backbone.View
         @$("#posts").append view.render().el
 
     create_post: (e) ->
-        e.preventDefault()
         post = new sm8.models.Post
         post.save @$(".create form").form_data(),
             success: (model) =>
                 @collection.add model, at: 0
                 @$(".create form textarea").val ""
-

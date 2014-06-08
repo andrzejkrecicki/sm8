@@ -3,13 +3,25 @@ from rest_framework import serializers
 from posting.models import Post, Hashtag
 from sm8.serializers import UserSerializer
 
-class PostSerializer(serializers.ModelSerializer):
+
+class CommentSerializer(serializers.ModelSerializer):
     user = serializers.Field(source='user.username')
-    likes = UserSerializer(many=True, required=False)
+    likes = UserSerializer(many=True, read_only=True)
+    parent = serializers.PrimaryKeyRelatedField(required=False)
 
     class Meta:
         model = Post
-        fields = ('id', 'user', 'title', 'content', 'pub_date', 'likes')
+        fields = ('id', 'user', 'content', 'pub_date', 'likes', 'parent')
+        depth = 1
+
+
+class PostSerializer(CommentSerializer):
+    comments = CommentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Post
+        fields = ('id', 'user', 'content', 'pub_date', 'likes', 'comments', 'parent')
+        depth = 1
 
 
 class HashtahSerializer(serializers.ModelSerializer):

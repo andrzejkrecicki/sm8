@@ -1,15 +1,41 @@
-<% insert_hashtag_hrefs = (text) -> text.replace /#(\w+)/g, (hashtag, tag) -> "<a href='hashtag/#{tag}/'>#{hashtag}</a>" %>
-<div class="post_wrapper">
-    <div class="post well">
-        <div class="info">
-            <div><i class="fa fa-user"></i> <span><a href="./user/<%= @user %>"><%= @user %></a></span></div>
-            <div><i class="fa fa-calendar"></i> <span><%= moment(@pub_date).fromNow() %></span></div>
-            <div><i class="fa fa-comments-o"></i> <span>45</span></div>
-        </div>
-        <div class="body"><p><%= @safe insert_hashtag_hrefs @content %></p></div>
-        <div class="footer">
-            <div><span class="clickable"><i class="fa fa-reply"></i> Reply</span></div>
-            <div><span class="clickable vote"><i class="fa fa-thumbs-o-up"></i>x<%= @likes.length %> votes</span></div>
+<% insert_hashtag_hrefs = (text) -> text.replace /#(\w+)/g, (hashtag, tag) -> "<a href='hashtag/#{tag.toLowerCase()}/'>#{hashtag}</a>" %>
+
+<% if not @parent: %>
+    <div class="well">
+<% end %>
+    <div class="<%= if not @parent then "post" else "comment" %> media">
+        <a class="pull-left" href="#">
+            <img src="" style="width: 64px; height: 64px;">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading"><i class="fa fa-user"></i> <a href="./user/<%= @user %>"><%= @user %></a> </h4>
+            <i class="fa fa-calendar"></i> <%= moment(@pub_date).fromNow() %>
+            <p><%= @safe insert_hashtag_hrefs @content %></p>
+            <div class="footer">
+                <% if not @parent: %>
+                    <div><span class="clickable reply"><i class="fa fa-reply"></i> Reply</span></div>
+                <% end %>
+                <div><span class="clickable vote-<%= @id %>"><i class="fa fa-thumbs-o-up"></i>x<%= @likes.length %> votes</span></div>
+                <% if @comments?.length: %>
+                    <div><i class="fa fa-comments-o"></i>x<span><%= @comments.length %> comments</span></div>
+                <% end %>
+            </div>
+            <% if @comments?.length: %>
+                <div class="comments"></div>
+            <% end %>
+            <% if not @parent: %>
+                <div class="reply_form" style="display: none;">
+                    <form class="form">
+                        <div class="form-group">
+                            <input type="hidden" name="parent" value="<%= @id %>">
+                            <textarea class="form-control" name="content" placeholder="Express your observation..."></textarea>
+                            <button type="submit" class="btn btn-default">Send</button>
+                        </div>
+                    </form>
+                </div>
+            <% end %>
         </div>
     </div>
-</div>
+<% if not @parent: %>
+    </div>
+<% end %>
