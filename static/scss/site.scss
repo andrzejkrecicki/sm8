@@ -78,15 +78,21 @@ body {
 
 .post_wrapper {
     .post {
-        .info {
+        .info, .footer {
             div {
                 display: inline-block;
                 margin-right: 5px;
                 margin-bottom: 5px;
                 i.fa {
-                    margin-right: 5px;
                     color: #666;
                 }
+            }
+        }
+        .footer .clickable:hover {
+            color: #fff;
+            cursor: pointer;
+            i.fa {
+                color: #fff;
             }
         }
     }

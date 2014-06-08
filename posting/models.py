@@ -14,6 +14,7 @@ class Post(models.Model):
     parent = models.ForeignKey('self', null=True)
     hashtags = models.ManyToManyField('Hashtag')
     user = models.ForeignKey(User)
+    likes = models.ManyToManyField(User, related_name='liked')
 
     class Meta:
         ordering = ['-pub_date']

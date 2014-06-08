@@ -2,10 +2,14 @@
 <div class="post_wrapper">
     <div class="post well">
         <div class="info">
-            <div><i class="fa fa-user"></i><span><a href="./user/<%= @user %>"><%= @user %></a></span></div>
-            <div><i class="fa fa-calendar"></i><span><%= moment(@pub_date).format('MMMM Do YYYY, h:mm:ss a') %></span></div>
-            <div><i class="fa fa-comments-o"></i><span>45</span></div>
+            <div><i class="fa fa-user"></i> <span><a href="./user/<%= @user %>"><%= @user %></a></span></div>
+            <div><i class="fa fa-calendar"></i> <span><%= moment(@pub_date).fromNow() %></span></div>
+            <div><i class="fa fa-comments-o"></i> <span>45</span></div>
         </div>
         <div class="body"><p><%= @safe insert_hashtag_hrefs @content %></p></div>
+        <div class="footer">
+            <div><span class="clickable"><i class="fa fa-reply"></i> Reply</span></div>
+            <div><span class="clickable vote"><i class="fa fa-thumbs-o-up"></i>x<%= @likes.length %> Vote</span></div>
+        </div>
     </div>
 </div>

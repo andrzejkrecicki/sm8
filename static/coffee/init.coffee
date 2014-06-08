@@ -41,6 +41,12 @@ window.sm8 = $.extend {}, Backbone.Events,
         sm8.user = null
         sm8.trigger "user_logout"
 
+    login_required: (obj, callback) ->
+        return ->
+            return callback.call(obj) if sm8.user
+            sm8.dialog_view = new sm8.views.Login
+            sm8.dialog_view.render()
+
 $.fn.extend
     form_data: ->
         data = {}
@@ -53,6 +59,8 @@ $.ajaxSetup
     beforeSend: (xhr, settings) ->
         if not /^(GET|HEAD|OPTIONS|TRACE)$/.test settings.type
             xhr.setRequestHeader "X-CSRFToken", sm8.csrftoken
+    complete: (result, xhr, status) ->
+        sm8.csrftoken = document.cookie.match('csrftoken=([^;]+)')?[1] or sm8.csrftoken
 
 $ ->
     sm8.initialize()

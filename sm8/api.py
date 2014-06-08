@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, permissions
 from rest_framework.routers import DefaultRouter
 from rest_framework.response import Response
+from rest_framework.decorators import link, action
 
 from posting.serializers import PostSerializer, HashtahSerializer
 from posting.models import Post, Hashtag
@@ -23,6 +25,15 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def pre_save(self, obj):
         obj.user = self.request.user
+
+    @action(permission_classes=(permissions.IsAuthenticatedOrReadOnly,))
+    def vote(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        if request.user != post.user:
+            post.likes.add(request.user)
+            post.save()
+        return Response(PostSerializer(post).data)
+
 
 
 class HashtagViewSet(viewsets.ReadOnlyModelViewSet):

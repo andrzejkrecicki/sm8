@@ -16,10 +16,8 @@ class sm8.views.RightSidebar extends Backbone.View
 
     login_logout: (e) ->
         e.preventDefault()
-        sm8.close_dialogs()
 
         if not sm8.user
-            $("body").append sm8.dialog = $ "<div/>", id: "dialog"
             sm8.dialog_view = new sm8.views.Login
             sm8.dialog_view.render()
         else

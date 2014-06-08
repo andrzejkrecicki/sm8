@@ -6,6 +6,10 @@ class sm8.views.Login extends Backbone.View
         "submit form": "submit"
         "click .login_btn": "submit"
 
+    initialize: ->
+        sm8.close_dialogs()
+        $("body").append @$el = sm8.dialog = $ "<div/>", id: "dialog"
+
     render: ->
         @$el.html @template()
         @$("#loginModal").modal()
@@ -25,7 +29,6 @@ class sm8.views.Login extends Backbone.View
                 if model.id
                     sm8.login new sm8.models.User response
                     @$("#loginModal").modal('hide')
-                    sm8.right_sidebar.render()
                 else
                     sm8.logout()
                 @$(".fa.fa-refresh").hide()
