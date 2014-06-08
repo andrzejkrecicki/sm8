@@ -9,7 +9,7 @@
         <div class="body"><p><%= @safe insert_hashtag_hrefs @content %></p></div>
         <div class="footer">
             <div><span class="clickable"><i class="fa fa-reply"></i> Reply</span></div>
-            <div><span class="clickable vote"><i class="fa fa-thumbs-o-up"></i>x<%= @likes.length %> Vote</span></div>
+            <div><span class="clickable vote"><i class="fa fa-thumbs-o-up"></i>x<%= @likes.length %> votes</span></div>
         </div>
     </div>
 </div>

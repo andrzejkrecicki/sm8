@@ -4,12 +4,10 @@
 html {
     width: 100%;
     height: 100%;
-    @include radial-gradient(center, circle cover, rgb(39, 43, 48) 0%, rgb(59, 63, 68) 100%);
-    @include background-size(cover);
 }
 
 body {
-    background-color: transparent;
+    color: #fff;
 }
 
 #app_container {
@@ -18,6 +16,7 @@ body {
 }
 
 .side_menu {
+    margin-top: 68px;
     ul {
         list-style-type: none;
         padding: 0;
@@ -28,7 +27,6 @@ body {
                 text-align: center;
                 display: block;
                 overflow: hidden;
-                opacity: .5;
                 font-size: 25px;
                 padding: 34px;
                 color: #ddd;
@@ -39,7 +37,7 @@ body {
                 }
             }
             a:hover {
-                opacity: .9;
+                opacity: .5;
             }
             a.home {
                 background: #454575;
@@ -84,7 +82,7 @@ body {
                 margin-right: 5px;
                 margin-bottom: 5px;
                 i.fa {
-                    color: #666;
+                    color: #858585;
                 }
             }
         }
@@ -96,4 +94,26 @@ body {
             }
         }
     }
+}
+
+.create {
+    form .form-group {
+        overflow: hidden;
+        textarea {
+            width: 90%;
+            float: left;
+        }
+        button {
+            margin-left: 1%;
+            width: 9%;
+            float: left;
+            height: 58px;
+
+        }
+    }
+}
+
+a {
+    color: #f90;
+    @include transition(all, .3s, ease-in-out);
 }

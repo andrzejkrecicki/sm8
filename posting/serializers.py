@@ -5,7 +5,7 @@ from sm8.serializers import UserSerializer
 
 class PostSerializer(serializers.ModelSerializer):
     user = serializers.Field(source='user.username')
-    likes = UserSerializer(many=True)
+    likes = UserSerializer(many=True, required=False)
 
     class Meta:
         model = Post
