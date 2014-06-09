@@ -79,6 +79,11 @@ body {
         display: inline;
         margin: 0 5px 0 0;
     }
+    .avatar {
+        border: solid 1px #ccf;
+        width: 64px;
+        height: 64px;
+    }
     .info, .footer {
         div {
             display: inline-block;

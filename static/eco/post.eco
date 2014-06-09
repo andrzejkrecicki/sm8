@@ -5,7 +5,7 @@
 <% end %>
     <div class="<%= if not @parent then "post" else "comment" %> media">
         <a class="pull-left" href="#">
-            <img src="" style="width: 64px; height: 64px;">
+            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="avatar">
         </a>
         <div class="media-body">
             <h4 class="media-heading"><i class="fa fa-user"></i> <a href="./user/<%= @user %>"><%= @user %></a> </h4>
