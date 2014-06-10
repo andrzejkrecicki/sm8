@@ -129,5 +129,6 @@ body {
 
 a {
     color: #f90;
+    cursor: pointer;
     @include transition(all, .3s, ease-in-out);
 }

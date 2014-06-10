@@ -39,12 +39,17 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 class HashtagViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Hashtag.objects.all()
-    serializer_class = HashtahSerializer
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
     def retrieve(self, request, pk):
-        posts = Post.objects.filter((Q(parent=None) & Q(hashtags__title=pk)) | Q(comments__hashtags__title=pk))
-        return Response(PostSerializer(posts, many=True).data)
+        posts = Post.objects.filter((Q(parent=None) & Q(hashtags__title=pk)) | Q(comments__hashtags__title=pk)).distinct()
+        page = self.paginate_queryset(posts)
+        if page is not None:
+            serializer = self.get_pagination_serializer(page)
+        else:
+            serializer = self.get_serializer(posts, many=True)
+        return Response(serializer.data)
 
 
 class LoginViewSet(viewsets.ReadOnlyModelViewSet):

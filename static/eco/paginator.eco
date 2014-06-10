@@ -1,0 +1,13 @@
+<% if @current > @first: %>
+    <li><a href="<%= @collection.hrefs %>" page="<%= @current - 1 %>">«</a></li>
+<% else: %>
+    <li class="disabled"><a href="<%= @collection.hrefs %>">«</a></li>
+<% end %>
+<% for page in @range: %>
+    <li <%= if page == @current then "class='active'" else "" %>><a href="<%= @collection.hrefs %>" page="<%= page %>"><%= page %></a></li>
+<% end %>
+<% if @current < @last: %>
+    <li><a href="<%= @collection.hrefs %>" page="<%= @current + 1 %>">»</a></li>
+<% else: %>
+    <li class="disabled"><a href="<%= @collection.hrefs %>">»</a></li>
+<% end %>

@@ -5,14 +5,14 @@ class sm8.views.Posts extends Backbone.View
     events:
         "submit .create form": "create_post"
 
+    title: "Recent posts"
+
     initialize: ->
         @collection = new sm8.collections.Posts
         @collection.fetch reset: true
 
-        @_render = @renderPosts
-
         @listenTo @collection, 'reset', @render
-        @listenTo @collection, 'add', @render
+        @listenTo @collection, 'page_changed', @render
 
         @listenTo sm8, "user_login", @toggle_create_form
         @listenTo sm8, "user_logout", @toggle_create_form
@@ -21,29 +21,28 @@ class sm8.views.Posts extends Backbone.View
         sm8.router.on "route:showRecentPosts", @switch_to_recent_posts
 
     render: ->
-        @_render()
-
-    renderPosts: ->
-        @$el.html @template title: "Recent posts"
-
-        for post in @collection.models
-            @renderPost post
-
-    renderHashtags: ->
-        @$el.html @template title: "Browsing hashtag ##{@tag}"
+        @$el.html @template
+            title: @title
+            collection: @collection
 
         for post in @collection.models
             @renderPost post
 
-    switch_to_hashtags: (tag) =>
-        @tag = tag
-        @_render = @renderHashtags
+        paginator = new sm8.views.Paginator @collection
+        @$("#pagination").html paginator.render()
+
+    switch_to_hashtags: (@tag) =>
+        @title = "Browsing hashtag ##{@tag}"
         @collection.url = -> "/api/hashtag/#{tag}/"
+        @collection.hrefs = "/hashtag/#{tag}/"
+        @collection.state.currentPage = @collection.state.firstPage
         @collection.fetch reset: true
 
     switch_to_recent_posts: =>
-        @_render = @renderPosts
+        @title = "Recent posts"
         @collection.url = "/api/post/"
+        @collection.hrefs = "/"
+        @collection.state.currentPage = @collection.state.firstPage
         @collection.fetch reset: true
 
     toggle_create_form: ->

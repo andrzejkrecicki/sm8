@@ -14,9 +14,6 @@ class sm8.views.Post extends Backbone.View
         @vote = sm8.login_required this, @vote
         @send_reply = sm8.login_required this, @send_reply
 
-        for comment, i in @model.attributes.comments or []
-            @model.attributes.comments[i] = new sm8.models.Post comment
-
     render: ->
         @$el.html @template @model.toJSON()
         for comment in @model.get('comments') or [] by -1
