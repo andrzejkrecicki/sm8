@@ -2,8 +2,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from django import forms
 
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, mixins
 from rest_framework.routers import DefaultRouter
 from rest_framework.response import Response
 from rest_framework.decorators import link, action
@@ -11,6 +12,7 @@ from rest_framework.decorators import link, action
 from posting.serializers import PostSerializer, HashtahSerializer
 from posting.models import Post, Hashtag
 from sm8.serializers import UserSerializer
+from sm8.forms import UserCreateForm
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -73,8 +75,25 @@ class LoginViewSet(viewsets.ReadOnlyModelViewSet):
         return Response({'errors': ['Invalid name or password']}, status=401)
 
 
+class RegisterViewSet(viewsets.GenericViewSet):
+    model = User
+    permission_classes = (permissions.AllowAny,)
 
-class LogoutViewSet(viewsets.ViewSet):
+    def create(self, request):
+        form = UserCreateForm(request.DATA)
+        if form.is_valid():
+            username = form.clean_username()
+            password = form.clean_password2()
+            form.save()
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return Response(UserSerializer(user).data)
+        else:
+            return Response({'errors': form.errors}, status=401)
+
+
+
+class LogoutViewSet(viewsets.GenericViewSet):
     permission_classes = (permissions.AllowAny,)
 
     def list(self, request):
@@ -88,3 +107,4 @@ router.register('post', PostViewSet)
 router.register('hashtag', HashtagViewSet)
 router.register('login', LoginViewSet)
 router.register('logout', LogoutViewSet, base_name='')
+router.register('register', RegisterViewSet)

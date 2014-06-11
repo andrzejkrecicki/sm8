@@ -3,8 +3,10 @@ class sm8.views.Login extends Backbone.View
     el: "#dialog"
 
     events:
-        "submit form": "submit"
-        "click .login_btn": "submit"
+        "submit .login_form": "submit_login"
+        "click .login_btn": "submit_login"
+        "submit .register_form": "submit_registration"
+        "click .register_btn": "submit_registration"
 
     initialize: ->
         sm8.close_dialogs()
@@ -12,15 +14,25 @@ class sm8.views.Login extends Backbone.View
 
     render: ->
         @$el.html @template()
+        @captcha = Recaptcha.create sm8.recaptcha_public, "captcha",
+            theme: "clean"
+            callback: Recaptcha.focus_response_field
         @$("#loginModal").modal()
         return this
 
-    submit: (e) ->
+    submit_login: (e) ->
         e.preventDefault()
         return if @$(":submit").prop("disabled")
         @$(":submit").prop("disabled", true)
         @$(".fa.fa-refresh").show()
-        @login @$("form").form_data()
+        @login @$(".login_form").form_data()
+
+    submit_registration: (e) ->
+        return if @$(":submit").prop("disabled")
+        @$(":submit").prop("disabled", true)
+        @$(".fa.fa-refresh").show()
+        @register @$(".register_form").form_data()
+
 
     login: (data) ->
         user = new sm8.models.User
@@ -43,3 +55,23 @@ class sm8.views.Login extends Backbone.View
                 sm8.logout()
                 @$(".fa.fa-refresh").hide()
                 @$(":submit").prop("disabled", false)
+
+    register: (data) ->
+        user = new sm8.models.User
+        user.urlRoot = 'api/register/'
+        user.save data,
+            success: (model, response, options) ->
+                if model.id
+                    sm8.login new sm8.models.User response
+                    @$("#loginModal").modal('hide')
+            error: (models, response, options) ->
+                Recaptcha.reload()
+                @$(".alert").alert('close')
+                for error, msg of response.responseJSON.errors
+                    @$("[name=#{error}]").parent().parent().before alert = $("<div/>")
+                    alert.addClass "alert alert-danger"
+                    alert.html "<a class='close' data-dismiss='alert'>×</a><span>#{msg[0]}</span>"
+                    alert.alert()
+                @$(".fa.fa-refresh").hide()
+                @$(":submit").prop("disabled", false)
+

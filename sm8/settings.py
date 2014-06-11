@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -49,6 +51,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'utils.context_processors.core_context_processor',
 )
 
 ROOT_URLCONF = 'sm8.urls'
@@ -136,3 +142,6 @@ PIPELINE_COMPILERS = (
     'pipeline.compilers.sass.SASSCompiler',
     'pipeline_eco.compiler.EcoCompiler',
 )
+
+RECAPTCHA_PUBLIC_KEY = '6LduFvUSAAAAAFJZALp8_T5V8kLKR3TTZeCV2jmL'
+RECAPTCHA_PRIVATE_KEY = '6LduFvUSAAAAAMLNW1bydZ1dnAZAl5pC9idyknOB'

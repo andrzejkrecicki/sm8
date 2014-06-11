@@ -5,9 +5,10 @@ window.sm8 = $.extend {}, Backbone.Events,
     routers: {}
     user: null
     csrftoken: $("meta[name=csrf-token]").attr 'content'
+    recaptcha_public: $("meta[name=recaptcha_public]").attr 'content'
 
     initialize: ->
-        $("body").on "click", "a", (e) ->
+        $("body").on "click", "a:not([href^=#])", (e) ->
             sm8.router.navigate $(@).attr("href"), trigger: true
             e.preventDefault()
 

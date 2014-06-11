@@ -33,7 +33,7 @@ class sm8.views.Post extends Backbone.View
             return
 
         @disabled = true
-        @$(".fa-thumbs-o-up").removeClass("fa-thumbs-o-up").addClass("fa-refresh fa-spin")
+        @$(".vote-#{@model.id} .fa-thumbs-o-up").removeClass("fa-thumbs-o-up").addClass("fa-refresh fa-spin")
         $.ajax
             url: "#{@model.url}#{@model.id}/vote/"
             type: "POST"

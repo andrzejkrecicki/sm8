@@ -132,3 +132,16 @@ a {
     cursor: pointer;
     @include transition(all, .3s, ease-in-out);
 }
+
+
+#recaptcha_table {
+    background-color: white !important;
+    width: 100%;
+    #recaptcha_response_field {
+        padding: 8px 16px;
+        border: solid 1px #ddf !important;
+    }
+    #recaptcha_image {
+        border: none !important;
+    }
+}
