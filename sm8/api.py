@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
@@ -8,10 +10,11 @@ from rest_framework import viewsets, permissions, mixins
 from rest_framework.routers import DefaultRouter
 from rest_framework.response import Response
 from rest_framework.decorators import link, action
+from rest_framework.parsers import FormParser, MultiPartParser
 
 from posting.serializers import PostSerializer, HashtahSerializer
-from posting.models import Post, Hashtag
-from sm8.serializers import UserSerializer
+from posting.models import Post, Hashtag, Profile
+from sm8.serializers import UserSerializer, ProfileSerializer
 from sm8.forms import UserCreateForm
 
 
@@ -19,7 +22,13 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.user == request.user
+        try:
+            return obj.user == request.user
+        except AttributeError, e:
+            try:
+                return obj == request.user
+            except AttributeError, e:
+                return False
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -54,6 +63,26 @@ class HashtagViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    model = User
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    serializer_class = ProfileSerializer
+    model = Profile
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+    parser_classes = (FormParser, MultiPartParser,)
+
+    def update(self, *args, **kwargs):
+        profile = Profile.objects.get(pk=kwargs.get('pk'))
+        for k, v in args[0].FILES.dict().iteritems():
+            setattr(profile, k, v)
+        profile.save()
+        return Response(UserSerializer(profile.user).data)
+
+
 class LoginViewSet(viewsets.ReadOnlyModelViewSet):
     model = User
     permission_classes = (permissions.AllowAny,)
@@ -84,7 +113,8 @@ class RegisterViewSet(viewsets.GenericViewSet):
         if form.is_valid():
             username = form.clean_username()
             password = form.clean_password2()
-            form.save()
+            user = form.save()
+            Profile.objects.create(user=user)
             user = authenticate(username=username, password=password)
             login(request, user)
             return Response(UserSerializer(user).data)
@@ -108,3 +138,5 @@ router.register('hashtag', HashtagViewSet)
 router.register('login', LoginViewSet)
 router.register('logout', LogoutViewSet, base_name='')
 router.register('register', RegisterViewSet)
+router.register('user', UserViewSet)
+router.register('profile', ProfileViewSet)

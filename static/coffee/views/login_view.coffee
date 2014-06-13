@@ -35,7 +35,7 @@ class sm8.views.Login extends Backbone.View
 
 
     login: (data) ->
-        user = new sm8.models.User
+        user = new sm8.models.Login
         user.save data,
             success: (model, response, options) ->
                 if model.id
@@ -57,8 +57,8 @@ class sm8.views.Login extends Backbone.View
                 @$(":submit").prop("disabled", false)
 
     register: (data) ->
-        user = new sm8.models.User
-        user.urlRoot = 'api/register/'
+        user = new sm8.models.Login
+        user.urlRoot = '/api/register/'
         user.save data,
             success: (model, response, options) ->
                 if model.id

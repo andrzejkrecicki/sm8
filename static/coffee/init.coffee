@@ -18,7 +18,7 @@ window.sm8 = $.extend {}, Backbone.Events,
         sm8.router = new sm8.routers.DefaultRouter
         Backbone.history.start pushState: true
 
-        (new sm8.models.User).fetch
+        (new sm8.models.Login).fetch
             success: (model, response, options) ->
                 if model.id
                     sm8.login new sm8.models.User response
@@ -43,6 +43,7 @@ window.sm8 = $.extend {}, Backbone.Events,
 
     logout: ->
         sm8.user = null
+        sm8.router.navigate "/", trigger: true
         sm8.trigger "user_logout"
 
     login_required: (obj, callback) ->
@@ -55,7 +56,12 @@ $.fn.extend
     form_data: ->
         data = {}
         form_data = $(@).serializeArray()
-        data[item.name] = item.value for item in form_data
+        for item in form_data
+            if match = item.name.match(/(\w+)\[(\w+)\]/)
+                data[match[1]] or = {}
+                data[match[1]][match[2]] = item.value
+            else
+                data[item.name] = item.value
         return data
 
 $.ajaxSetup

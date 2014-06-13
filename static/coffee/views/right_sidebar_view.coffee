@@ -4,11 +4,14 @@ class sm8.views.RightSidebar extends Backbone.View
 
     events:
         "click .login_logout": "login_logout"
+        "click .settings": "settings"
 
     initialize: ->
         @render()
         @listenTo sm8, "user_login", @render
         @listenTo sm8, "user_logout", @render
+
+        @settings = sm8.login_required this, @settings
 
     render: ->
         @$el.html @template()
@@ -22,6 +25,6 @@ class sm8.views.RightSidebar extends Backbone.View
             sm8.dialog_view.render()
         else
             $.ajax
-                url: "api/logout/"
+                url: "/api/logout/"
                 success: ->
                     sm8.logout()
