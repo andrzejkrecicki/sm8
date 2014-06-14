@@ -20,3 +20,5 @@ urlpatterns = patterns('',
 urlpatterns += patterns('',
     url(r'^', include(frontend.urls)),
 )
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

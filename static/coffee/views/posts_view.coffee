@@ -13,6 +13,7 @@ class sm8.views.Posts extends Backbone.View
 
         @listenTo @collection, 'reset', @render
         @listenTo @collection, 'page_changed', @render
+        @listenTo @collection, 'page_changed', sm8.scroll_to_top
 
         @listenTo sm8, "user_login", @toggle_create_form
         @listenTo sm8, "user_logout", @toggle_create_form
@@ -26,7 +27,8 @@ class sm8.views.Posts extends Backbone.View
             collection: @collection
 
         for post in @collection.models
-            @renderPost post
+            view = new sm8.views.Post model: post
+            @$("#posts").append view.render().el
 
         paginator = new sm8.views.Paginator @collection
         @$("#pagination").html paginator.render()
@@ -50,10 +52,6 @@ class sm8.views.Posts extends Backbone.View
             @$(".create").hide()
         else
             @$(".create").show()
-
-    renderPost: (post) ->
-        view = new sm8.views.Post model: post
-        @$("#posts").append view.render().el
 
     create_post: (e) ->
         post = new sm8.models.Post

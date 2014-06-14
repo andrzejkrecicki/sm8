@@ -1,0 +1,10 @@
+<ul>
+    <li><a href="/" class="home"><i class="fa fa-home"></i></a></li>
+    <li><a href="#" class="messages"><i class="fa fa-envelope-o"></i></a></li>
+    <% if sm8.user: %>
+        <li><a href='/user/<%= sm8.user.attributes.username %>/' class="profile"><i class="fa fa-user"></i></a></li>
+    <% else: %>
+        <li><a href="/" class="profile"><i class="fa fa-user"></i></a></li>
+    <% end %>
+    <li><a href="#" class="favourites"><i class="fa fa-star-o"></i></a></li>
+</ul>

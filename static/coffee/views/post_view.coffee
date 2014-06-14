@@ -28,7 +28,7 @@ class sm8.views.Post extends Backbone.View
             @comment_tooltip "You have voted on this post before."
             return
 
-        if @model.get('user') == sm8.user.get('username')
+        if @model.get('user').username == sm8.user.get('username')
             @comment_tooltip "You cannot vote on your own posts."
             return
 

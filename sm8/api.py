@@ -48,7 +48,6 @@ class PostViewSet(viewsets.ModelViewSet):
         return Response(PostSerializer(post).data)
 
 
-
 class HashtagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -67,6 +66,22 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     model = User
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
+    def retrieve(self, *args, **kwargs):
+        user = get_object_or_404(User, username=kwargs.get('pk'))
+        return Response(UserSerializer(user).data)
+
+    @link()
+    def posts(self, *args, **kwargs):
+        user = get_object_or_404(User, username=kwargs.get('pk'))
+        posts = user.post_set.filter(parent=None)
+        self.serializer_class = PostSerializer
+        page = self.paginate_queryset(posts)
+        if page is not None:
+            serializer = self.get_pagination_serializer(page)
+        else:
+            serializer = self.get_serializer(posts, many=True)
+        return Response(serializer.data)
 
 
 class ProfileViewSet(viewsets.ModelViewSet):

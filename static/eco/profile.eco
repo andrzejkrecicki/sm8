@@ -1,0 +1,15 @@
+<h2><%= @user.get 'username' %></h2>
+<div class="profile_heading">
+    <div class="background">
+        <img src="<%= sm8.media @user.get('profile').background_thumb %>">
+    </div>
+    <img class="avatar" src="<%= sm8.media @user.get('profile').avatar_thumb %>">
+    <div class="details">
+        <i class="fa fa-user"></i> <%= "#{@user.get('first_name')} #{@user.get('last_name')}" %>
+        <i class="fa fa-university"></i> <%= "#{@user.get('profile').city or 'Unknown'}" %>
+        <i class="fa fa-globe"></i> <%= "#{@user.get('profile').site or 'Unknown'}" %>
+    </div>
+</div>
+<h3>Recent activity</h3>
+<div id="posts"></div>
+<div id="pagination"></div>

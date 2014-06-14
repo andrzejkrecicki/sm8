@@ -7,7 +7,7 @@ from posting.models import Profile
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('city', 'site', 'avatar', 'background')
+        fields = ('city', 'site', 'avatar_thumb', 'background_thumb')
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()

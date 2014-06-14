@@ -4,6 +4,7 @@ window.sm8 = $.extend {}, Backbone.Events,
     views: {}
     routers: {}
     user: null
+    media_root: "/media/"
     csrftoken: $("meta[name=csrf-token]").attr 'content'
     recaptcha_public: $("meta[name=recaptcha_public]").attr 'content'
 
@@ -29,6 +30,7 @@ window.sm8 = $.extend {}, Backbone.Events,
 
         sm8.posts_view = new sm8.views.Posts
         sm8.right_sidebar = new sm8.views.RightSidebar
+        sm8.left_sidebar = new sm8.views.LeftSidebar
 
     close_dialogs: ->
         return unless sm8.dialog_view
@@ -51,6 +53,12 @@ window.sm8 = $.extend {}, Backbone.Events,
             return callback.call(obj) if sm8.user
             sm8.dialog_view = new sm8.views.Login
             sm8.dialog_view.render()
+
+    media: (url) ->
+        sm8.media_root + url if url
+
+    scroll_to_top: ->
+        $("html, body").animate scrollTop: "0px"
 
 $.fn.extend
     form_data: ->

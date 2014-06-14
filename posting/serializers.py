@@ -5,7 +5,7 @@ from sm8.serializers import UserSerializer
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.Field(source='user.username')
+    user = UserSerializer(read_only=True)
     likes = UserSerializer(many=True, read_only=True)
     parent = serializers.PrimaryKeyRelatedField(required=False)
 
