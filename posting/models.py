@@ -78,3 +78,9 @@ class Profile(models.Model):
         thumb_io = StringIO.StringIO()
         thumb.save(thumb_io, 'JPEG')
         return InMemoryUploadedFile(thumb_io, None, os.path.split(image.path)[-1], 'image/jpeg', thumb_io.len, None)
+
+
+class StaticPage(models.Model):
+    """Simplified version of django Flatpages"""
+    codename = models.CharField(max_length=200, unique=True)
+    content = models.TextField()

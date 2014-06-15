@@ -154,14 +154,13 @@ a {
 .profile_heading {
     position: relative;
     height: 260px;
-    img {
+    .background, .avatar {
         border: solid 1px #567;
     }
     .background {
         overflow: hidden;
+        height: 220px;
         img {
-            width: 100%;
-            height: 220px;
             background: #567;
         }
     }

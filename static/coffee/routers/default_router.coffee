@@ -4,6 +4,7 @@ class sm8.routers.DefaultRouter extends Backbone.Router
         @route /^hashtag\/(\w+)\/$/, "showHashtag"
         @route /^settings\/$/, "showSettings", @showSettings
         @route /^user\/([\w.@+-]+)\/$/, "showProfile", @showProfile
+        @route /^page\/([\w\/-]+)\/$/, "staticPage", @staticPage
 
     showSettings: ->
         if not sm8.user
@@ -17,3 +18,9 @@ class sm8.routers.DefaultRouter extends Backbone.Router
         profile.fetch
             success: ->
                 sm8.profile_view = new sm8.views.Profile model: profile
+
+    staticPage: (codename) ->
+        page = new sm8.models.StaticPage id: codename
+        page.fetch
+            success: ->
+                sm8.page_view = new sm8.views.StaticPage model: page

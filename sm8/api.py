@@ -12,8 +12,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import link, action
 from rest_framework.parsers import FormParser, MultiPartParser
 
-from posting.serializers import PostSerializer, HashtahSerializer
-from posting.models import Post, Hashtag, Profile
+from posting.serializers import PostSerializer, HashtahSerializer, StaticPageSerializer
+from posting.models import Post, Hashtag, Profile, StaticPage
 from sm8.serializers import UserSerializer, ProfileSerializer
 from sm8.forms import UserCreateForm
 
@@ -137,7 +137,6 @@ class RegisterViewSet(viewsets.GenericViewSet):
             return Response({'errors': form.errors}, status=401)
 
 
-
 class LogoutViewSet(viewsets.GenericViewSet):
     permission_classes = (permissions.AllowAny,)
 
@@ -145,6 +144,13 @@ class LogoutViewSet(viewsets.GenericViewSet):
         logout(request)
         return Response({'data': 'ok'})
 
+
+class StaticPageViewSet(viewsets.ReadOnlyModelViewSet):
+    model = StaticPage
+
+    def retrieve(self, request, pk):
+        page = get_object_or_404(StaticPage, codename=pk)
+        return Response(StaticPageSerializer(page).data)
 
 
 router = DefaultRouter()
@@ -155,3 +161,4 @@ router.register('logout', LogoutViewSet, base_name='')
 router.register('register', RegisterViewSet)
 router.register('user', UserViewSet)
 router.register('profile', ProfileViewSet)
+router.register('page', StaticPageViewSet)

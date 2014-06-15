@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from posting.models import Post, Hashtag
+from posting.models import Post, Hashtag, StaticPage
 from sm8.serializers import UserSerializer
 
 
@@ -28,3 +28,8 @@ class HashtahSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hashtag
         fields = ('id', 'title',)
+
+class StaticPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StaticPage
+        fields = ('id', 'codename', 'content')
