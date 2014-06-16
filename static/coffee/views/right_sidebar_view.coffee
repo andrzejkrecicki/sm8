@@ -5,12 +5,14 @@ class sm8.views.RightSidebar extends Backbone.View
     events:
         "click .login_logout": "login_logout"
         "click .settings": "settings"
+        "click .profile": "profile"
 
     initialize: ->
         @render()
         @listenTo sm8, "user_login", @render
         @listenTo sm8, "user_logout", @render
 
+        @profile = sm8.login_required this, @profile
         @settings = sm8.login_required this, @settings
 
     render: ->
@@ -28,3 +30,5 @@ class sm8.views.RightSidebar extends Backbone.View
                 url: "/api/logout/"
                 success: ->
                     sm8.logout()
+
+    profile: ->

@@ -6,3 +6,4 @@ django-pipeline-eco==0.1.5
 djangorestframework==2.3.13
 django-recaptcha==1.0
 pillow==2.4.0
+python-memcached==1.53

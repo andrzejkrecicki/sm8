@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django import forms
+from django.core.cache import cache
 
 from rest_framework import viewsets, permissions, mixins
 from rest_framework.routers import DefaultRouter
@@ -153,6 +154,52 @@ class StaticPageViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(StaticPageSerializer(page).data)
 
 
+class PopularPostsViewSet(viewsets.ReadOnlyModelViewSet):
+    model = Post
+
+    def list(self, request):
+        try:
+            page = int(request.GET.get('page', 1))
+        except TypeError, ValueError:
+            page = 1
+        per_page = request.GET.get(self.paginate_by_param, self.paginate_by)
+        data = cache.get('PopularPostsViewSet.list:%d:%d' % (page, per_page))
+        if data is not None:
+            return Response(data)
+
+        # This cannot be done via querysets with annotations because of double
+        # join to "posting_post_likes". Moreover rest-framework serializer refuses
+        # to handle RawQuerySet hence pagination is done manually.
+        count = Post.objects.count()
+        posts = Post.objects.raw("""
+            SELECT "posting_post"."id",
+                   "posting_post"."title",
+                   "posting_post"."content",
+                   "posting_post"."pub_date",
+                   "posting_post"."parent_id",
+                   "posting_post"."user_id",
+                   COUNT(DISTINCT T4."id") AS "cc",
+                   COUNT(DISTINCT "posting_post_likes"."id") AS "lc",
+                   COUNT(DISTINCT T7."id") AS "clc"
+            FROM "posting_post"
+            LEFT OUTER JOIN "posting_post" T4 ON ("posting_post"."id" = T4."parent_id")
+            LEFT OUTER JOIN "posting_post_likes" ON ("posting_post"."id" = "posting_post_likes"."post_id")
+            LEFT OUTER JOIN "posting_post_likes" T7 ON (T4."id" = T7."post_id")
+            WHERE "posting_post"."parent_id" IS NULL
+            GROUP BY "posting_post"."id",
+                     "posting_post"."title",
+                     "posting_post"."content",
+                     "posting_post"."pub_date",
+                     "posting_post"."parent_id",
+                     "posting_post"."user_id"
+            ORDER BY cc+lc+clc DESC LIMIT %d, %d
+        """ % ((page-1)*per_page, per_page))
+
+        data = {'count': count, 'results' : PostSerializer(posts).data}
+        cache.set('PopularPostsViewSet.list:%d:%d' % (page, per_page), data, 3600)
+        return Response(data)
+
+
 router = DefaultRouter()
 router.register('post', PostViewSet)
 router.register('hashtag', HashtagViewSet)
@@ -162,3 +209,4 @@ router.register('register', RegisterViewSet)
 router.register('user', UserViewSet)
 router.register('profile', ProfileViewSet)
 router.register('page', StaticPageViewSet)
+router.register('top', PopularPostsViewSet)

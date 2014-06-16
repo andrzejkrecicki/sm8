@@ -20,6 +20,7 @@ class sm8.views.Posts extends Backbone.View
 
         sm8.router.on "route:showHashtag", @switch_to_hashtags
         sm8.router.on "route:showRecentPosts", @switch_to_recent_posts
+        sm8.router.on "route:showTopPosts", @switch_to_top
 
     render: ->
         @$el.html @template
@@ -44,6 +45,13 @@ class sm8.views.Posts extends Backbone.View
         @title = "Recent posts"
         @collection.url = "/api/post/"
         @collection.hrefs = "/"
+        @collection.state.currentPage = @collection.state.firstPage
+        @collection.fetch reset: true
+
+    switch_to_top: =>
+        @title = "Popular discussions"
+        @collection.url = "/api/top/"
+        @collection.hrefs = "/top/"
         @collection.state.currentPage = @collection.state.firstPage
         @collection.fetch reset: true
 

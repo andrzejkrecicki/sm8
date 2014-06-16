@@ -2,6 +2,7 @@ class sm8.routers.DefaultRouter extends Backbone.Router
     initialize: ->
         @route /^\/?$/, "showRecentPosts"
         @route /^hashtag\/(\w+)\/$/, "showHashtag"
+        @route /^top\/$/, "showTopPosts"
         @route /^settings\/$/, "showSettings", @showSettings
         @route /^user\/([\w.@+-]+)\/$/, "showProfile", @showProfile
         @route /^page\/([\w\/-]+)\/$/, "staticPage", @staticPage

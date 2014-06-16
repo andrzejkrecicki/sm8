@@ -150,3 +150,10 @@ PIPELINE_COMPILERS = (
 
 RECAPTCHA_PUBLIC_KEY = '6LduFvUSAAAAAFJZALp8_T5V8kLKR3TTZeCV2jmL'
 RECAPTCHA_PRIVATE_KEY = '6LduFvUSAAAAAMLNW1bydZ1dnAZAl5pC9idyknOB'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
