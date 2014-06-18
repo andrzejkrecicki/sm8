@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'south',
     'pipeline',
+    'djcelery',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -157,3 +158,5 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'

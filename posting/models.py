@@ -2,11 +2,14 @@ import re
 import os
 import StringIO
 from PIL import Image
+import jsonfield
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.core.files.uploadedfile import InMemoryUploadedFile
+
+from posting.tasks import get_opengraph
 
 # Create your models here.
 
@@ -19,6 +22,7 @@ class Post(models.Model):
     hashtags = models.ManyToManyField('Hashtag')
     user = models.ForeignKey(User)
     likes = models.ManyToManyField(User, related_name='liked')
+    opengraph = jsonfield.JSONField(null=True, max_length=2000)
 
     class Meta:
         ordering = ['-pub_date']
@@ -32,6 +36,12 @@ class Post(models.Model):
                 self.hashtags.add(Hashtag.objects.get(title=tag))
             except Hashtag.DoesNotExist, e:
                 self.hashtags.add(Hashtag.objects.create(title=tag))
+
+        if not self.opengraph:
+            r = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
+            urls = r.findall(self.content)
+            if urls:
+                get_opengraph.delay(self, urls[0])
 
     def __unicode__(self):
         return self.title

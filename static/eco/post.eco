@@ -1,4 +1,5 @@
 <% insert_hashtag_hrefs = (text) -> text.replace /#(\w+)/g, (hashtag, tag) -> "<a href='hashtag/#{tag.toLowerCase()}/'>#{hashtag}</a>" %>
+<% insert_http_hrefs = (text) -> text.replace /http[s]?:\/\/(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+/g, (href) -> "<a href='#{href}'>#{href}</a>" %>
 
 <% if not @parent: %>
     <div class="well">
@@ -10,7 +11,19 @@
         <div class="media-body">
             <h4 class="media-heading"><i class="fa fa-user"></i> <a href="/user/<%= @user.username %>/"><%= @user.username %></a> </h4>
             <i class="fa fa-calendar"></i> <%= moment(@pub_date).fromNow() %>
-            <p><%= @safe insert_hashtag_hrefs @content %></p>
+            <% if @opengraph: %>
+                <div class="og">
+                    <% if @opengraph.image: %>
+                        <a href="<%= @opengraph.url %>" target="_blank"><img src="<%= @opengraph.image %>" class="og-img"></a>
+                    <% else if @opengraph.video: %>
+                        <iframe width="560" height="315" src="<%= @opengraph.video %>" frameborder="0" allowfullscreen></iframe>
+                    <% end %>
+                    <h4><a href="<%= @opengraph.url %>" target="_blank"><%= @opengraph.title %></a></h4>
+                    <p><%= @opengraph.description %></p>
+                    <p class="site-title"><%= @opengraph.site_name %></p>
+                </div>
+            <% end %>
+            <p><%= @safe insert_hashtag_hrefs insert_http_hrefs @content %></p>
             <div class="footer">
                 <% if not @parent: %>
                     <div><span class="clickable reply"><i class="fa fa-reply"></i> Reply</span></div>

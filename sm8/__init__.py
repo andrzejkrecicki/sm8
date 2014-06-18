@@ -1,0 +1,1 @@
+from sm8.celery_conf import app as celery_app

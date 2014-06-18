@@ -20,7 +20,7 @@ class PostSerializer(CommentSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'user', 'content', 'pub_date', 'likes', 'comments', 'parent')
+        fields = ('id', 'user', 'content', 'pub_date', 'likes', 'comments', 'parent', 'opengraph')
         depth = 1
 
 

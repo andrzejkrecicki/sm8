@@ -101,6 +101,22 @@ body {
             color: #fff;
         }
     }
+    .og {
+        overflow: hidden;
+        margin: 10px;
+        padding: 2px;
+        border: solid 1px #789;
+        background: #586878;
+        img.og-img {
+            max-width: 100%;
+            max-height: 300px;
+            float: left;
+            margin-right: 15px;
+        }
+        .site-title {
+            color: #bbb;
+        }
+    }
 }
 
 .create, .reply_form {

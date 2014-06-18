@@ -67,3 +67,4 @@ class sm8.views.Posts extends Backbone.View
             success: (model) =>
                 @collection.add model, at: 0
                 @$(".create form textarea").val ""
+                @render()

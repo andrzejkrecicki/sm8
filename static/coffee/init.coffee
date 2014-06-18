@@ -9,7 +9,7 @@ window.sm8 = $.extend {}, Backbone.Events,
     recaptcha_public: $("meta[name=recaptcha_public]").attr 'content'
 
     initialize: ->
-        $("body").on "click", "a:not([href^=#])", (e) ->
+        $("body").on "click", "a:not([href^=#]):not([href^=http])", (e) ->
             sm8.router.navigate $(@).attr("href"), trigger: true
             e.preventDefault()
 
