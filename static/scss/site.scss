@@ -17,6 +17,9 @@ body {
 
 .side_menu {
     margin-top: 68px;
+    @media (max-width: 992px) {
+        margin: 10px 15px;
+    }
     ul {
         list-style-type: none;
         padding: 0;
@@ -34,6 +37,21 @@ body {
                 > i {
                     float: left;
                     width: 100%;
+                }
+            }
+            .current_user {
+                position: absolute;
+                top: 5px;
+                text-align: center;
+                width: 100%;
+            }
+            @media (max-width: 992px) {
+                a {
+                    float: left;
+                    width: 25%;
+                }
+                .current_user {
+                    width: 25%;
                 }
             }
             a:hover {
@@ -62,12 +80,6 @@ body {
             }
             a.help {
                 background: #522;
-            }
-            .current_user {
-                position: absolute;
-                top: 5px;
-                text-align: center;
-                width: 100%;
             }
         }
     }
@@ -109,9 +121,7 @@ body {
         background: #586878;
         img.og-img {
             max-width: 100%;
-            max-height: 300px;
-            float: left;
-            margin-right: 15px;
+            margin: 10px 0;
         }
         .site-title {
             color: #bbb;
