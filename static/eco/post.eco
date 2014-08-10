@@ -13,10 +13,10 @@
             <i class="fa fa-calendar"></i> <%= moment(@pub_date).fromNow() %>
             <% if @opengraph: %>
                 <div class="og row">
-                    <% if @opengraph.image: %>
-                        <a href="<%= @opengraph.url %>" class="col-md-7 col-xs-12" target="_blank"><img src="<%= @opengraph.image %>" class="og-img"></a>
-                    <% else if @opengraph.video: %>
+                    <% if @opengraph.video: %>
                         <iframe width="560" height="315" class="col-md-7 col-xs-12" src="<%= @opengraph.video %>" frameborder="0" allowfullscreen></iframe>
+                    <% else if @opengraph.image: %>
+                        <a href="<%= @opengraph.url %>" class="col-md-7 col-xs-12" target="_blank"><img src="<%= @opengraph.image %>" class="og-img"></a>
                     <% end %>
                     <div class="col-md-5">
                         <h4><a href="<%= @opengraph.url %>" target="_blank"><%= @opengraph.title %></a></h4>
