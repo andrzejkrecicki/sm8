@@ -57,6 +57,7 @@ sm8 is microblogging, social-networking service that allows users to shere conte
 - responsive design
 - automatic URLs detection for asynchronous [opengraph] preview generation with [celery] tasks
 - popular recent discussions - cached by [memcached]
+- full featured minification for js, css and html (yes, html is also minified)
 - support for static pages
 - reCAPTCHA protected users registration
 - configurable profile fields, avatars and timeline background photo
@@ -102,7 +103,11 @@ Application document structure is intended to be as tiny as possible and contain
 </body>
 </html>
 ```
-All required style-sheets and scripts are glued together, minified and loaded in separate calls or grabbed from browser cache if it's possible. Data is not prefetched to allow further varnish-like caching.
+All required style-sheets and scripts are glued together, minified and loaded in separate calls or grabbed from browser cache if it's possible. Data is not prefetched to allow further varnish-like caching. The above html code afterwards is minified with MinifyHTMLMiddleware hence it looks as follows:
+```html
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="csrf-token" content="eMaj2wJPg7CJebofLyQrpVshPGHKQlaj"><meta name="recaptcha_public" content="6LduFvUSAAAAAFJZALp8_T5V8kLKR3TTZeCV2jmL"><title></title><link href="/static/css/all.css" rel="stylesheet" type="text/css" /></head><body><div id="app_container"><div class="container"><div class="row"><div class="side_menu col-md-1"><div class="row" id="left_menu"></div></div><div class="side_menu col-md-1 col-md-push-10"><div class="row" id="right_menu"></div></div><div class="content col-md-10 col-md-pull-1"><div id="middle"></div></div></div></div></div><script type="application/javascript" src="/static/js/all.js" charset="utf-8"></script></body></html>
+```
+
 
 
 <h3>Design</h3>
